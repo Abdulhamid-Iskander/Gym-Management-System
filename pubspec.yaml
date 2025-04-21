@@ -4,19 +4,28 @@ publish_to: 'none'
 version: 0.1.0
 
 environment:
-  sdk: ^3.6.1
+  sdk: ^3.6.0
 
 dependencies:
   flutter:
     sdk: flutter
+  percent_indicator: ^4.2.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo appbar.png"
+  adaptive_icon_foreground: "assets/images/logo appbar.png"
+  adaptive_icon_background: "#ffffff" 
+  remove_alpha_ios: true
 
 flutter:
   uses-material-design: true
   assets:
     - assets/images/
-    
