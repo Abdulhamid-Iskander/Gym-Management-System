@@ -5,11 +5,13 @@ import 'package:gym_management_app/models/drawer_item_model.dart';
 class CustomDrawer extends StatefulWidget {
   final String adminName;
   final String adminEmail;
+  final int indexPage;
 
   const CustomDrawer({
     super.key,
     required this.adminName,
     required this.adminEmail,
+    required this.indexPage,
   });
 
   @override
@@ -17,7 +19,11 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  int selectedIndex = 0;
+  late int selectedIndex = 0;
+  void initState() {
+    super.initState();
+    selectedIndex = widget.indexPage;
+  }
 
   void navigateToScreen(BuildContext context, Widget screen) {
     Navigator.pop(context);

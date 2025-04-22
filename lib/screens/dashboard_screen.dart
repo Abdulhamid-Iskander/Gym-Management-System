@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_management_app/widgets/custom_drawer.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -36,143 +37,149 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-// Drawer section
-      drawer: Drawer(
-        child: Column(
-          children: [
-            // User info
-            const UserAccountsDrawerHeader(
-              decoration: BoxDecoration(
-                color: Color(0xFF0C1E6F),
-              ),
-              accountName: Text("CaesAr"),
-              accountEmail: Text("caesar@gmail.com"),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.grey,
-                child: Icon(Icons.person, color: Colors.white),
-              ),
-            ),
-            // component
-            ListTile(
-              leading: Icon(Icons.dashboard),
-              title: Text("Dashboard"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "Dashboard"),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.person),
-              title: Text("Admin Profile"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "Admin Profile"),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.app_registration),
-              title: Text("Registration"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "Registration"),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.payment),
-              title: Text("Payment"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "Payment"),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.list),
-              title: Text("Plan"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "Plan"),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.people),
-              title: Text("View Members"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "View Members"),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.inventory),
-              title: Text("Inventory"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "Inventory"),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.fitness_center),
-              title: Text("Coaches"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "Coaches"),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.bar_chart),
-              title: Text("Report"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "Report"),
-                    ));
-              },
-            ),
-            Spacer(),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text("Logout"),
-              onTap: () {
-                Navigator.pop(context);
-// TODO: Add logout logic here
-              },
-            ),
-          ],
-        ),
+      drawer: CustomDrawer(
+        adminName: "CaesAr",
+        adminEmail: "caesar@gmail.com",
+        indexPage: 0,
       ),
+
+// Drawer section
+//       drawer: Drawer(
+//         child: Column(
+//           children: [
+//             // User info
+//             const UserAccountsDrawerHeader(
+//               decoration: BoxDecoration(
+//                 color: Color(0xFF0C1E6F),
+//               ),
+//               accountName: Text("CaesAr"),
+//               accountEmail: Text("caesar@gmail.com"),
+//               currentAccountPicture: CircleAvatar(
+//                 backgroundColor: Colors.grey,
+//                 child: Icon(Icons.person, color: Colors.white),
+//               ),
+//             ),
+//             // component
+//             ListTile(
+//               leading: Icon(Icons.dashboard),
+//               title: Text("Dashboard"),
+//               onTap: () {
+//                 Navigator.pop(context);
+//                 Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                       builder: (context) => DummyScreen(title: "Dashboard"),
+//                     ));
+//               },
+//             ),
+//             ListTile(
+//               leading: Icon(Icons.person),
+//               title: Text("Admin Profile"),
+//               onTap: () {
+//                 Navigator.pop(context);
+//                 Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                       builder: (context) => DummyScreen(title: "Admin Profile"),
+//                     ));
+//               },
+//             ),
+//             ListTile(
+//               leading: Icon(Icons.app_registration),
+//               title: Text("Registration"),
+//               onTap: () {
+//                 Navigator.pop(context);
+//                 Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                       builder: (context) => DummyScreen(title: "Registration"),
+//                     ));
+//               },
+//             ),
+//             ListTile(
+//               leading: Icon(Icons.payment),
+//               title: Text("Payment"),
+//               onTap: () {
+//                 Navigator.pop(context);
+//                 Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                       builder: (context) => DummyScreen(title: "Payment"),
+//                     ));
+//               },
+//             ),
+//             ListTile(
+//               leading: Icon(Icons.list),
+//               title: Text("Plan"),
+//               onTap: () {
+//                 Navigator.pop(context);
+//                 Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                       builder: (context) => DummyScreen(title: "Plan"),
+//                     ));
+//               },
+//             ),
+//             ListTile(
+//               leading: Icon(Icons.people),
+//               title: Text("View Members"),
+//               onTap: () {
+//                 Navigator.pop(context);
+//                 Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                       builder: (context) => DummyScreen(title: "View Members"),
+//                     ));
+//               },
+//             ),
+//             ListTile(
+//               leading: Icon(Icons.inventory),
+//               title: Text("Inventory"),
+//               onTap: () {
+//                 Navigator.pop(context);
+//                 Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                       builder: (context) => DummyScreen(title: "Inventory"),
+//                     ));
+//               },
+//             ),
+//             ListTile(
+//               leading: Icon(Icons.fitness_center),
+//               title: Text("Coaches"),
+//               onTap: () {
+//                 Navigator.pop(context);
+//                 Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                       builder: (context) => DummyScreen(title: "Coaches"),
+//                     ));
+//               },
+//             ),
+//             ListTile(
+//               leading: Icon(Icons.bar_chart),
+//               title: Text("Report"),
+//               onTap: () {
+//                 Navigator.pop(context);
+//                 Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                       builder: (context) => DummyScreen(title: "Report"),
+//                     ));
+//               },
+//             ),
+//             Spacer(),
+//             ListTile(
+//               leading: Icon(Icons.logout),
+//               title: Text("Logout"),
+//               onTap: () {
+//                 Navigator.pop(context);
+// // TODO: Add logout logic here
+//               },
+//             ),
+//           ],
+//         ),
+//       ),
 
 // AppBar
       appBar: AppBar(
@@ -181,7 +188,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         leading: Builder(
           builder: (context) => IconButton(
             icon: const Icon(Icons.menu, color: Colors.white),
-            onPressed: () => Scaffold.of(context).openDrawer(),
+            onPressed: () =>
+                Scaffold.of(context).openDrawer(), // ✅ فتح الدروار صح
           ),
         ),
         actions: [
