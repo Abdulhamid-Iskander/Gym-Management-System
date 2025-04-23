@@ -4,7 +4,6 @@ import 'package:gym_management_app/models/drawer_item_model.dart';
 import 'package:gym_management_app/screens/dashboard_screen.dart';
 import 'package:gym_management_app/screens/coaches_screen.dart';
 import 'package:gym_management_app/screens/plan_screen.dart';
-// Import other screens as needed
 
 class CustomDrawer extends StatefulWidget {
   final String adminName;
@@ -25,13 +24,6 @@ class CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
   late int selectedIndex;
 
-  @override
-  void initState() {
-    super.initState();
-    // use indexPage 
-    selectedIndex = widget.indexPage;
-  }
-
   final List<DrawerItem> _drawerItems = [
     DrawerItem(
       icon: Icons.dashboard,
@@ -46,22 +38,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
     DrawerItem(
       icon: Icons.app_registration,
       title: 'Registration',
-      screen: const Placeholder(), // لما تعمل الصفحه  Placeholder شيل ال 
+      screen: const Placeholder(),
     ),
     DrawerItem(
       icon: Icons.payment,
       title: 'Payment',
-      screen: const Placeholder(), // لما تعمل الصفحه  Placeholder شيل ال 
+      screen: const Placeholder(),
     ),
     DrawerItem(
       icon: Icons.people,
       title: 'View Members',
-      screen: const Placeholder(), // لما تعمل الصفحه  Placeholder شيل ال 
+      screen: const Placeholder(),
     ),
     DrawerItem(
       icon: Icons.inventory,
       title: 'Inventory',
-      screen: const Placeholder(), // لما تعمل الصفحه  Placeholder شيل ال 
+      screen: const Placeholder(),
     ),
     DrawerItem(
       icon: Icons.fitness_center,
@@ -71,9 +63,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
     DrawerItem(
       icon: Icons.analytics,
       title: 'Report',
-      screen: const Placeholder(), // لما تعمل الصفحه  Placeholder شيل ال 
+      screen: const Placeholder(),
     ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    selectedIndex = widget.indexPage;
+  }
 
   void navigateToScreen(BuildContext context, Widget screen) {
     Navigator.pop(context);

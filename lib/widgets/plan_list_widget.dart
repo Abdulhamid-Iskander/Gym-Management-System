@@ -7,104 +7,94 @@ class PlanListWidget extends StatelessWidget {
   final Function(PlanModel) onEdit;
 
   const PlanListWidget({
-    super.key,
+    Key? key,
     required this.plans,
     required this.onEdit,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
+    return Card(
+      color: AppColors.primaryDark,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-          columnSpacing: 24,
-          headingTextStyle: const TextStyle(
-            color: AppColors.white,
-            fontWeight: FontWeight.bold,
-          ),
-          headingRowColor: WidgetStateColor.resolveWith(
-            (states) => AppColors.primary,
-          ),
-          dataRowColor: WidgetStateColor.resolveWith(
-            (states) => AppColors.primaryDark,
-          ),
-          border: TableBorder(
-            horizontalInside: BorderSide(
-              // ignore: deprecated_member_use
-              color: AppColors.white.withOpacity(0.2),
-              width: 1,
+        scrollDirection: Axis.vertical,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+            columnSpacing: 24,
+            headingTextStyle: const TextStyle(
+              color: AppColors.white,
+              fontWeight: FontWeight.bold,
             ),
-          ),
-          columns: const [
-            DataColumn(
-              label: Text('Plan Name'),
+            headingRowColor: MaterialStateColor.resolveWith(
+              (states) => AppColors.primary,
             ),
-            DataColumn(
-              label: Text('Validity (Days)'),
-              numeric: true,
+            dataRowColor: MaterialStateColor.resolveWith(
+              (states) => AppColors.primaryDark,
             ),
-            DataColumn(
-              label: Text('Amount'),
-              numeric: true,
+            border: TableBorder(
+              horizontalInside: BorderSide(
+                color: AppColors.white.withOpacity(0.2),
+                width: 1,
+              ),
             ),
-            DataColumn(
-              label: Text('Actions'),
-            ),
-          ],
-          rows: plans.map((plan) {
-            return DataRow(
-              cells: [
-                DataCell(
-                  Text(
-                    plan.name,
-                    style: const TextStyle(
-                      color: AppColors.white,
-                      fontWeight: FontWeight.bold,
+            columns: const [
+              DataColumn(label: Text('Plan Name')),
+              DataColumn(label: Text('Validity (Days)'), numeric: true),
+              DataColumn(label: Text('Amount'), numeric: true),
+              DataColumn(label: Text('Actions')),
+            ],
+            rows: plans.map((plan) {
+              return DataRow(
+                cells: [
+                  DataCell(
+                    Text(
+                      plan.name,
+                      style: const TextStyle(
+                        color: AppColors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                DataCell(
-                  Text(
-                    '${plan.validity}',
-                    style: const TextStyle(color: AppColors.white),
+                  DataCell(
+                    Text(
+                      '${plan.validity}',
+                      style: const TextStyle(color: AppColors.white),
+                    ),
                   ),
-                ),
-                DataCell(
-                  Text(
-                    '\$${plan.amount.toStringAsFixed(2)}',
-                    style: const TextStyle(color: AppColors.white),
+                  DataCell(
+                    Text(
+                      '\$${plan.amount.toStringAsFixed(2)}',
+                      style: const TextStyle(color: AppColors.white),
+                    ),
                   ),
-                ),
-                DataCell(
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: () => onEdit(plan),
-                        icon: const Icon(
-                          Icons.edit,
-                          color: AppColors.yellow,
+                  DataCell(
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          onPressed: () => onEdit(plan),
+                          icon: const Icon(Icons.edit, color: AppColors.yellow),
+                          tooltip: 'Edit Plan',
                         ),
-                        tooltip: 'Edit Plan',
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          // implemint in future 'we hope'.
-                        },
-                        icon: const Icon(
-                          Icons.delete,
-                          color: Colors.redAccent,
+                        IconButton(
+                          onPressed: () {
+                            // Future delete functionality
+                          },
+                          icon:
+                              const Icon(Icons.delete, color: Colors.redAccent),
+                          tooltip: 'Delete Plan',
                         ),
-                        tooltip: 'Delete Plan',
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            );
-          }).toList(),
+                ],
+              );
+            }).toList(),
+          ),
         ),
       ),
     );

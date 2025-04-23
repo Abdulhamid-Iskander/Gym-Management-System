@@ -24,9 +24,7 @@ class _PlanScreenState extends State<PlanScreen> {
   List<PlanModel> get filteredPlans {
     if (searchController.text.isEmpty) return _allPlans;
     return _allPlans
-        .where((plan) => plan.name
-            .toLowerCase()
-            .contains(searchController.text.toLowerCase()))
+        .where((plan) => plan.name.toLowerCase().contains(searchController.text.toLowerCase()))
         .toList();
   }
 
@@ -40,42 +38,22 @@ class _PlanScreenState extends State<PlanScreen> {
     if (name.isNotEmpty && validity > 0 && amount > 0) {
       setState(() {
         if (editingIndex != null) {
-          // update current plane
-          _allPlans[editingIndex!] = PlanModel(
-            name: name,
-            validity: validity,
-            amount: amount,
-          );
+          _allPlans[editingIndex!] = PlanModel(name: name, validity: validity, amount: amount);
           editingIndex = null;
         } else {
-          // add new plan
-          _allPlans.add(
-            PlanModel(name: name, validity: validity, amount: amount),
-          );
+          _allPlans.add(PlanModel(name: name, validity: validity, amount: amount));
         }
-        nameController.clear();
-        validityController.clear();
-        amountController.clear();
+        _clearForm();
         showForm = false;
       });
     } else {
-      
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter valid data'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      _showErrorMessage('Please enter valid data');
     }
   }
 
   void _onEdit(PlanModel plan) {
-
     final index = _allPlans.indexWhere(
-      (p) =>
-          p.name == plan.name &&
-          p.validity == plan.validity &&
-          p.amount == plan.amount,
+      (p) => p.name == plan.name && p.validity == plan.validity && p.amount == plan.amount,
     );
 
     if (index != -1) {
@@ -91,33 +69,48 @@ class _PlanScreenState extends State<PlanScreen> {
 
   void _onCancel() {
     setState(() {
-      nameController.clear();
-      validityController.clear();
-      amountController.clear();
-      editingIndex = null;
+      _clearForm();
       showForm = false;
     });
+  }
+
+  void _clearForm() {
+    nameController.clear();
+    validityController.clear();
+    amountController.clear();
+  }
+
+  void _showErrorMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const CustomDrawer(
+      drawer: CustomDrawer(
         adminName: "CaesAr",
         adminEmail: "caesar@gmail.com",
-        indexPage: 1, 
+        indexPage: 1,
       ),
       backgroundColor: AppColors.grayLight,
       appBar: AppBar(
         title: Row(
           children: [
             CircleAvatar(
-              backgroundImage: AssetImage('assets/images/logo.png'),
-              radius: 15,
+              backgroundColor: AppColors.white,
+              child: Image.asset(
+                "assets/images/logo.png",
+                height: 40,
+              ),
             ),
-            const SizedBox(width: 18),
+            const SizedBox(width: 8),
             const Text(
-              "Plans",
+              'Plan',
               style: TextStyle(color: AppColors.white),
             ),
           ],
@@ -137,9 +130,8 @@ class _PlanScreenState extends State<PlanScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
@@ -154,9 +146,7 @@ class _PlanScreenState extends State<PlanScreen> {
                   onPressed: () {
                     setState(() {
                       showForm = !showForm;
-                      if (!showForm) {
-                        _onCancel();
-                      }
+                      if (!showForm) _onCancel();
                     });
                   },
                   icon: Icon(showForm ? Icons.close : Icons.add),
@@ -172,7 +162,6 @@ class _PlanScreenState extends State<PlanScreen> {
               ],
             ),
             const SizedBox(height: 16),
-
             if (showForm)
               PlanFormWidget(
                 nameController: nameController,
@@ -181,81 +170,58 @@ class _PlanScreenState extends State<PlanScreen> {
                 onSave: _onSave,
                 onCancel: _onCancel,
               ),
-
             const SizedBox(height: 20),
-
-            Card(
-              color: AppColors.primaryDark,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                        const Text(
-                          'All Plans',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.white,
-                          ),
-                        ),
-                        const SizedBox(
-                            width: 12), 
-
-                        Expanded(
+            Expanded(
+              child: Card(
+                color: AppColors.primaryDark,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: SizedBox(
+                          width: 250,
                           child: TextField(
                             controller: searchController,
                             onChanged: (_) => setState(() {}),
                             decoration: InputDecoration(
-                              hintText: 'Search plans',
-                              hintStyle: const TextStyle(color: Colors.grey),
-                              prefixIcon:
-                                  const Icon(Icons.search, color: Colors.grey),
+                              hintText: 'Search',
+                              prefixIcon: const Icon(Icons.search),
                               filled: true,
                               fillColor: AppColors.white,
                               contentPadding: const EdgeInsets.symmetric(
-                                vertical: 0,
-                                horizontal: 12,
-                              ),
+                                vertical: 0, horizontal: 12),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide.none,
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    if (_allPlans.isEmpty)
-                      const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(20.0),
-                          child: Text(
-                            'No plans added yet. Use the Add Plan button to create a new plan.',
-                            style: TextStyle(color: AppColors.white),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      )
-                    else
-                      SizedBox(
-                        height: 400, 
-                        child: PlanListWidget(
-                          plans: filteredPlans,
-                          onEdit: _onEdit,
-                        ),
                       ),
-                  ],
+                      const SizedBox(height: 16),
+                      Expanded(
+                        child: _allPlans.isEmpty
+                            ? const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(20.0),
+                                  child: Text(
+                                    'No plans added yet. Use the Add Plan button to create a new plan.',
+                                    style: TextStyle(color: AppColors.white),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              )
+                            : PlanListWidget(
+                                plans: filteredPlans,
+                                onEdit: _onEdit,
+                              ),
+                    ],
+                  ),
                 ),
               ),
             ),

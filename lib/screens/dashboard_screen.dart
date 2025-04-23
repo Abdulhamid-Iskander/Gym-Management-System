@@ -1,4 +1,3 @@
-// lib/screens/dashboard_screen.dart
 import 'package:flutter/material.dart';
 import 'package:gym_management_app/constants/colors.dart';
 import 'package:gym_management_app/widgets/custom_drawer.dart';
@@ -89,7 +88,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           IconButton(
             icon: const Icon(Icons.notifications, color: AppColors.white),
             onPressed: () {
-              // here implemint logic
+              // here implement logic
             },
           ),
         ],

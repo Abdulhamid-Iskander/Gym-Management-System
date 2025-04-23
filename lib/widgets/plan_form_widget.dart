@@ -41,7 +41,7 @@ class PlanFormWidget extends StatelessWidget {
               children: [
                 Expanded(
                   child: _buildTextField(
-                    nameController, 
+                    nameController,
                     'Plan Name',
                     Icons.assignment,
                     inputType: TextInputType.text,
@@ -50,7 +50,7 @@ class PlanFormWidget extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: _buildTextField(
-                    validityController, 
+                    validityController,
                     'Validity (in days)',
                     Icons.calendar_today,
                     inputType: TextInputType.number,
@@ -61,7 +61,7 @@ class PlanFormWidget extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             _buildTextField(
-              amountController, 
+              amountController,
               'Amount',
               Icons.attach_money,
               inputType: TextInputType.numberWithOptions(decimal: true),
@@ -107,8 +107,8 @@ class PlanFormWidget extends StatelessWidget {
   }
 
   Widget _buildTextField(
-    TextEditingController controller, 
-    String hint, 
+    TextEditingController controller,
+    String hint,
     IconData icon, {
     TextInputType inputType = TextInputType.text,
     List<TextInputFormatter>? inputFormatters,
