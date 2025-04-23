@@ -1,4 +1,9 @@
+// lib/screens/dashboard_screen.dart
 import 'package:flutter/material.dart';
+import 'package:gym_management_app/constants/colors.dart';
+import 'package:gym_management_app/widgets/custom_drawer.dart';
+import 'package:gym_management_app/widgets/member_card.dart';
+import 'package:gym_management_app/widgets/inventory_item.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -11,14 +16,25 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   DateTime? selectedDate;
 
-// TODO: Replace this dummy inventory data with API response later
+  // Sample inventory data
   final List<Map<String, dynamic>> inventory = [
     {"name": "Treadmill", "quantity": 4, "status": "Available"},
     {"name": "Bench Press", "quantity": 2, "status": "Needs Maintenance"},
     {"name": "Dumbbells", "quantity": 20, "status": "Available"},
   ];
 
-// NOTE: This is temporary for testing. Might be handled by the backend later
+  // Sample coaches data
+  final List<String> coaches = [
+    "Mo'men Maher",
+    "Ramy Adel",
+  ];
+
+  // Sample members data
+  final List<Map<String, dynamic>> members = [
+    {"name": "Yasser Ibrahim", "subscription": "Paid: Jan 1 - Expiry: Feb 1"},
+    {"name": "Mohamed Ali", "subscription": "Paid: Jan 1 - Expiry: Feb 1"},
+  ];
+
   Future<void> _pickDate() async {
     DateTime? picked = await showDatePicker(
       context: context,
@@ -36,163 +52,50 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-// Drawer section
-      drawer: Drawer(
-        child: Column(
+      // Standardize drawer implementation
+      drawer: const CustomDrawer(
+        adminName: "CaeSer",
+        adminEmail: "CaeSer@gmail.com",
+        indexPage: 0,
+      ),
+
+      // AppBar with consistent styling
+      appBar: AppBar(
+        backgroundColor: AppColors.primary,
+        title: Row(
           children: [
-            // User info
-            const UserAccountsDrawerHeader(
-              decoration: BoxDecoration(
-                color: Color(0xFF0C1E6F),
-              ),
-              accountName: Text("CaesAr"),
-              accountEmail: Text("caesar@gmail.com"),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.grey,
-                child: Icon(Icons.person, color: Colors.white),
-              ),
+            CircleAvatar(
+              backgroundImage: AssetImage('assets/images/logo.png'),
+              radius: 15,
             ),
-            // component
-            ListTile(
-              leading: Icon(Icons.dashboard),
-              title: Text("Dashboard"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "Dashboard"),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.person),
-              title: Text("Admin Profile"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "Admin Profile"),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.app_registration),
-              title: Text("Registration"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "Registration"),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.payment),
-              title: Text("Payment"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "Payment"),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.list),
-              title: Text("Plan"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "Plan"),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.people),
-              title: Text("View Members"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "View Members"),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.inventory),
-              title: Text("Inventory"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "Inventory"),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.fitness_center),
-              title: Text("Coaches"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "Coaches"),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.bar_chart),
-              title: Text("Report"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DummyScreen(title: "Report"),
-                    ));
-              },
-            ),
-            Spacer(),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text("Logout"),
-              onTap: () {
-                Navigator.pop(context);
-// TODO: Add logout logic here
-              },
+            const SizedBox(width: 18),
+            const Text(
+              "Dashboard",
+              style: TextStyle(color: AppColors.white),
             ),
           ],
         ),
-      ),
-
-// AppBar
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF0C1E6F),
-        title: const Text("Dashboard", style: TextStyle(color: Colors.white)),
         leading: Builder(
           builder: (context) => IconButton(
-            icon: const Icon(Icons.menu, color: Colors.white),
+            icon: const Icon(Icons.menu, color: AppColors.white),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.calendar_today, color: Colors.white),
+            icon: const Icon(Icons.calendar_today, color: AppColors.white),
             onPressed: _pickDate,
+          ),
+          IconButton(
+            icon: const Icon(Icons.notifications, color: AppColors.white),
+            onPressed: () {
+              // here implemint logic
+            },
           ),
         ],
       ),
 
-// Body
+      // Body
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: ListView(
@@ -208,7 +111,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             const SizedBox(height: 24),
 
-// Coaches & Sales Cards
+            // Coaches & Sales Cards
             Row(
               children: [
                 _buildCoachesCard(),
@@ -219,109 +122,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             const SizedBox(height: 24),
 
-// Active Members Section
-            const Text("Active Members",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-
-// Search Field
-// NOTE: UI only - search functionality not implemented yet (will be added after API integration)
-// TODO: implement search logic (filter members based on input)
-
-            TextField(
-              decoration: InputDecoration(
-                hintText: "Search",
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-// Filter Chips
-            Wrap(
-              spacing: 8,
-              children: [
-                _buildFilterChip("Sort by", icon: Icons.sort_by_alpha),
-                _buildFilterChip("Date Paid"),
-                _buildFilterChip("Date Expiry"),
-                _buildFilterChip("Status"),
-              ],
-            ),
-            const Divider(height: 32),
-
-// Members Cards
-            _buildMemberCard("Yasser Ibrahim", "Paid: Jan 1 - Expiry: Feb 1"),
-            _buildMemberCard("Mohamed Ali", "Paid: Jan 1 - Expiry: Feb 1"),
+            // Active Members Section
+            _buildMembersSection(),
 
             const SizedBox(height: 24),
 
-// Inventory Section
-            const Text("Inventory",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            ...inventory.map((item) => Card(
-                  child: ListTile(
-                    title: Text(item['name']),
-                    subtitle: Text(
-                        "Quantity: ${item['quantity']} | Status: ${item['status']}"),
-                    trailing: Icon(
-                      item['status'] == "Available"
-                          ? Icons.check_circle
-                          : Icons.warning,
-                      color: item['status'] == "Available"
-                          ? Colors.green
-                          : Colors.orange,
-                    ),
-                  ),
-                )),
-            TextButton(
-              onPressed: () {
-// TODO: Implement "Show All" navigation
-              },
-              child: const Text("Show All"),
-            ),
+            // Inventory Section
+            _buildInventorySection(),
           ],
         ),
       ),
     );
   }
 
-// Drawer item builder to reduce redundancy
-  // ignore: unused_element
-  Widget _buildDrawerItem(IconData icon, String title) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(title),
-      onTap: () {
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DummyScreen(title: title),
-          ),
-        );
-      },
-    );
-  }
-
-// Reusable method for filter chips
-  Widget _buildFilterChip(String label, {IconData? icon}) {
-    return FilterChip(
-      label: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (icon != null) Icon(icon, size: 16),
-          if (icon != null) const SizedBox(width: 4),
-          Text(label),
-        ],
-      ),
-      onSelected: (bool value) {},
-    );
-  }
-
-// Coaches Card
   Widget _buildCoachesCard() {
     return Expanded(
       child: Card(
@@ -334,9 +147,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               _buildCardHeader("Coaches"),
               const SizedBox(height: 12),
-              _buildCoachRow("Maher Mo'men"),
-              _buildCoachRow("Big Rami"),
-              _buildCoachRow("Peter"),
+              ...coaches.map((coach) => _buildCoachRow(coach)),
             ],
           ),
         ),
@@ -344,7 +155,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-// Sales Card
   Widget _buildSalesCard() {
     return Expanded(
       child: Card(
@@ -364,7 +174,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   percent: 0.84,
                   center: const Text("84%",
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  progressColor: const Color(0xFF0C1E6F),
+                  progressColor: AppColors.primary,
                   backgroundColor: Colors.grey.shade300,
                   circularStrokeCap: CircularStrokeCap.round,
                 ),
@@ -376,7 +186,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-// Card header row with title and more icon
   Widget _buildCardHeader(String title) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -385,14 +194,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
         IconButton(
           icon: const Icon(Icons.more_vert),
           onPressed: () {
-// TODO: Implement options logic
+            // Action for more options
           },
+          tooltip: "More options",
         ),
       ],
     );
   }
 
-// Single coach row
   Widget _buildCoachRow(String name) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
@@ -403,44 +212,96 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Icon(Icons.person, color: Colors.white),
           ),
           const SizedBox(width: 8),
-          Text(name),
+          Expanded(
+            // avoid overflow
+            child: Text(
+              name,
+              overflow: TextOverflow.ellipsis, 
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
         ],
       ),
     );
   }
 
-// Member card
-  Widget _buildMemberCard(String name, String subtitle) {
-    return Card(
-      child: ListTile(
-        leading: const CircleAvatar(
-          backgroundColor: Colors.grey,
-          child: Icon(Icons.person, color: Colors.white),
+  Widget _buildMembersSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text("Active Members",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8),
+
+        // Search Field
+        TextField(
+          decoration: InputDecoration(
+            hintText: "Search",
+            prefixIcon: const Icon(Icons.search),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          ),
         ),
-        title: Text(name),
-        subtitle: Text(subtitle),
-        trailing: InkWell(
-          onTap: () {
-// TODO: Implement member options
-          },
-          child: const Icon(Icons.more_vert),
+        const SizedBox(height: 16),
+
+        // Filter Chips
+        Wrap(
+          spacing: 8,
+          children: [
+            _buildFilterChip("Sort by", icon: Icons.sort_by_alpha),
+            _buildFilterChip("Date Paid"),
+            _buildFilterChip("Date Expiry"),
+            _buildFilterChip("Status"),
+          ],
         ),
-      ),
+        const Divider(height: 32),
+
+        // Member Cards
+        ...members.map((member) => MemberCard(
+              name: member['name'],
+              subtitle: member['subscription'],
+              onMorePressed: () {
+                // Action for more options
+              },
+            )),
+      ],
     );
   }
-}
 
-// Temporary screen for navigation testing
-// TODO: Remove this once all screens are implemented
-class DummyScreen extends StatelessWidget {
-  final String title;
-  const DummyScreen({super.key, required this.title});
+  Widget _buildInventorySection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text("Inventory",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8),
+        ...inventory.map((item) => InventoryItem(
+              name: item['name'],
+              quantity: item['quantity'],
+              status: item['status'],
+            )),
+        Center(
+          child: TextButton(
+            onPressed: () {
+              // Action for show all button
+            },
+            child: const Text("Show All"),
+          ),
+        ),
+      ],
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Center(child: Text("This is the $title page")),
+  Widget _buildFilterChip(String label, {IconData? icon}) {
+    return FilterChip(
+      label: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) Icon(icon, size: 16),
+          if (icon != null) const SizedBox(width: 4),
+          Text(label),
+        ],
+      ),
+      onSelected: (bool value) {},
     );
   }
 }
