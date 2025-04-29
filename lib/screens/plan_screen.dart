@@ -19,13 +19,12 @@ class _PlanScreenState extends State<PlanScreen> {
   final TextEditingController searchController = TextEditingController();
 
   final List<PlanModel> _allPlans = [];
+  int? editingIndex; 
 
   List<PlanModel> get filteredPlans {
     if (searchController.text.isEmpty) return _allPlans;
     return _allPlans
-        .where((plan) => plan.name
-            .toLowerCase()
-            .contains(searchController.text.toLowerCase()))
+        .where((plan) => plan.name.toLowerCase().contains(searchController.text.toLowerCase()))
         .toList();
   }
 
@@ -38,32 +37,56 @@ class _PlanScreenState extends State<PlanScreen> {
 
     if (name.isNotEmpty && validity > 0 && amount > 0) {
       setState(() {
-        _allPlans
-            .add(PlanModel(name: name, validity: validity, amount: amount));
-        nameController.clear();
-        validityController.clear();
-        amountController.clear();
+        if (editingIndex != null) {
+          _allPlans[editingIndex!] = PlanModel(name: name, validity: validity, amount: amount);
+          editingIndex = null;
+        } else {
+          _allPlans.add(PlanModel(name: name, validity: validity, amount: amount));
+        }
+        _clearForm();
         showForm = false;
       });
+    } else {
+      _showErrorMessage('Please enter valid data');
     }
   }
 
   void _onEdit(PlanModel plan) {
-    setState(() {
-      nameController.text = plan.name;
-      validityController.text = plan.validity.toString();
-      amountController.text = plan.amount.toString();
-      showForm = true;
-    });
+    final index = _allPlans.indexWhere(
+      (p) => p.name == plan.name && p.validity == plan.validity && p.amount == plan.amount,
+    );
+
+    if (index != -1) {
+      setState(() {
+        editingIndex = index;
+        nameController.text = plan.name;
+        validityController.text = plan.validity.toString();
+        amountController.text = plan.amount.toString();
+        showForm = true;
+      });
+    }
   }
 
   void _onCancel() {
+    setState(() {
+      _clearForm();
+      showForm = false;
+    });
+  }
+
+  void _clearForm() {
     nameController.clear();
     validityController.clear();
     amountController.clear();
-    setState(() {
-      showForm = false;
-    });
+  }
+
+  void _showErrorMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 
   @override
@@ -109,21 +132,32 @@ class _PlanScreenState extends State<PlanScreen> {
         child: Column(
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton(
+                const Text(
+                  'Membership Plans',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                  ),
+                ),
+                ElevatedButton.icon(
                   onPressed: () {
                     setState(() {
                       showForm = !showForm;
+                      if (!showForm) _onCancel();
                     });
                   },
+                  icon: Icon(showForm ? Icons.close : Icons.add),
+                  label: Text(showForm ? 'Cancel' : 'Add Plan'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
+                    backgroundColor: showForm ? Colors.red : AppColors.primary,
                     foregroundColor: AppColors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text('Add Plan'),
                 ),
               ],
             ),
@@ -161,7 +195,7 @@ class _PlanScreenState extends State<PlanScreen> {
                               filled: true,
                               fillColor: AppColors.white,
                               contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 12),
+                                vertical: 0, horizontal: 12),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -171,11 +205,21 @@ class _PlanScreenState extends State<PlanScreen> {
                       ),
                       const SizedBox(height: 16),
                       Expanded(
-                        child: PlanListWidget(
-                          plans: filteredPlans,
-                          onEdit: _onEdit,
-                        ),
-                      ),
+                        child: _allPlans.isEmpty
+                            ? const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(20.0),
+                                  child: Text(
+                                    'No plans added yet. Use the Add Plan button to create a new plan.',
+                                    style: TextStyle(color: AppColors.white),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              )
+                            : PlanListWidget(
+                                plans: filteredPlans,
+                                onEdit: _onEdit,
+                              ),
                     ],
                   ),
                 ),
@@ -185,5 +229,14 @@ class _PlanScreenState extends State<PlanScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    validityController.dispose();
+    amountController.dispose();
+    searchController.dispose();
+    super.dispose();
   }
 }

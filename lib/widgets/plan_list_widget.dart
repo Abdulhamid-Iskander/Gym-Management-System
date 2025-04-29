@@ -25,57 +25,70 @@ class PlanListWidget extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: DataTable(
             columnSpacing: 24,
+            headingTextStyle: const TextStyle(
+              color: AppColors.white,
+              fontWeight: FontWeight.bold,
+            ),
             headingRowColor: MaterialStateColor.resolveWith(
               (states) => AppColors.primary,
             ),
+            dataRowColor: MaterialStateColor.resolveWith(
+              (states) => AppColors.primaryDark,
+            ),
+            border: TableBorder(
+              horizontalInside: BorderSide(
+                color: AppColors.white.withOpacity(0.2),
+                width: 1,
+              ),
+            ),
             columns: const [
-              DataColumn(
-                label: Text(
-                  'Plan Name',
-                  style: TextStyle(color: AppColors.white),
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  'Validity',
-                  style: TextStyle(color: AppColors.white),
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  'Amount',
-                  style: TextStyle(color: AppColors.white),
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  'Edit',
-                  style: TextStyle(color: AppColors.white),
-                ),
-              ),
+              DataColumn(label: Text('Plan Name')),
+              DataColumn(label: Text('Validity (Days)'), numeric: true),
+              DataColumn(label: Text('Amount'), numeric: true),
+              DataColumn(label: Text('Actions')),
             ],
             rows: plans.map((plan) {
               return DataRow(
                 cells: [
-                  DataCell(Text(plan.name,
-                      style: const TextStyle(color: AppColors.white))),
-                  DataCell(Text('${plan.validity}',
-                      style: const TextStyle(color: AppColors.white))),
-                  DataCell(Text('${plan.amount}',
-                      style: const TextStyle(color: AppColors.white))),
                   DataCell(
-                    ElevatedButton(
-                      onPressed: () => onEdit(plan),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.yellow,
-                        foregroundColor: AppColors.primary,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                    Text(
+                      plan.name,
+                      style: const TextStyle(
+                        color: AppColors.white,
+                        fontWeight: FontWeight.bold,
                       ),
-                      child: const Text('Edit'),
+                    ),
+                  ),
+                  DataCell(
+                    Text(
+                      '${plan.validity}',
+                      style: const TextStyle(color: AppColors.white),
+                    ),
+                  ),
+                  DataCell(
+                    Text(
+                      '\$${plan.amount.toStringAsFixed(2)}',
+                      style: const TextStyle(color: AppColors.white),
+                    ),
+                  ),
+                  DataCell(
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          onPressed: () => onEdit(plan),
+                          icon: const Icon(Icons.edit, color: AppColors.yellow),
+                          tooltip: 'Edit Plan',
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            // Future delete functionality
+                          },
+                          icon:
+                              const Icon(Icons.delete, color: Colors.redAccent),
+                          tooltip: 'Delete Plan',
+                        ),
+                      ],
                     ),
                   ),
                 ],
